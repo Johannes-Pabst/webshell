@@ -1,16 +1,135 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Mono:400');
+
 body {
-    font-family: monospace;
-    background: black;
-    color: white;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    flex-direction: column;
+    margin: 0;
+    background: #0a0a0a;
+    color: #fff;
+    font-family: 'Fira Mono', monospace;
+    letter-spacing: -7px;
+    position: relative;
+    overflow: hidden;
     padding: 10px;
 }
 
-#terminal {
+div {
+    position: relative;
+    text-align: left;
+    text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.9),
+    0 0 40px rgba(255, 255, 255, 0.8),
+    0 0 80px rgba(255, 255, 255, 0.7),
+    0 0 120px rgba(255, 255, 255, 0.6);
+    animation: flicker 10s infinite alternate;
+}
+
+@keyframes flicker {
+    0% { opacity: 1; text-shadow:
+        0 0 10px rgba(255, 255, 255, 0.9),
+        0 0 50px rgba(255, 255, 255, 0.9);
+    }
+
+    40% { opacity: 0.98; text-shadow:
+         0 0 8px rgba(255, 255, 255, 0.8),
+         0 0 45px rgba(255, 255, 255, 0.7);
+    }
+
+    60% { opacity: 1; text-shadow:
+         0 0 12px rgba(255, 255, 255, 1),
+         0 0 55px rgba(255, 255, 255, 0.95);
+    }
+
+    100% { opacity: 0.92; text-shadow:
+          0 0 9px rgba(255, 255, 255, 0.85),
+          0 0 48px rgba(255, 255, 255, 0.75);
+    }
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
-    overflow-y: auto;
+    background: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 80px 80px;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+body::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.03),
+        rgba(255, 255, 255, 0.03) 1px,
+        transparent 2px,
+        transparent 5px
+    );
+    background-size: 120px 120px;
+    mix-blend-mode: overlay;
+    z-index: -1;
+    opacity: 0.3;
+}
+
+p {
+    font-size: 18px;
+    margin: 0;
+    padding-top: 20px;
+    letter-spacing: 5px;
+}
+
+.terminal {
+    font-size: 24px;
+    letter-spacing: normal;
+    max-width: 90%;
     white-space: pre-wrap;
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+    text-align: left;
+    overflow-y: auto;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    white-space: pre-wrap;
+}
+
+.command {
+    background: rgb(255, 255, 255, 0);
+    color: rgb(255, 255, 255);
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    width: 100%;
+    font-size: 24px;
+    letter-spacing: normal;
+    max-width: 90%;
+    white-space: pre-wrap;
+    z-index: 1;
+    animation: flicker 10s infinite alternate;
+}
+
+/*Cursor to be implemented*/
+
+.cursor {
+    display: inline-block;
+    width: 20px;
+    background: #fff;
+    animation: blink-cursor 1s steps(2, start) infinite;
+}
+
+@keyframes blink-cursor {
+    0% { opacity: 100; }
+    50% { opacity: 0; }
 }
 
 .prompt {
@@ -21,23 +140,36 @@ body {
     margin-right: 5px;
 }
 
-#command {
-    background: black;
-    color: rgb(255, 255, 255);
-    border: none;
-    outline: none;
-    flex-grow: 1;
-    font-family: monospace;
-    width: 100%;
+#nano-editor {
+display: none;
+background: rgb(255, 255, 255, 0);
+color: rgb(255, 255, 255);
+font-size: 24px;
+border: none;
+outline: none;
+width: 100%;
+height: 100px;
+flex-grow: 1;
+animation: flicker 10s infinite alternate;
 }
 
-#nano-editor {
-    display: none;
-    background: black;
-    color: white;
-    border: none;
-    outline: none;
+.scanlines {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 100px;
-    font-family: monospace;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255, 255, 255, 0.03) 3px,
+        transparent 4px
+    );
+    pointer-events: none;
+    z-index: 2;
+}
+
+.fisheye {
+    filter: url(#fisheye);
 }
