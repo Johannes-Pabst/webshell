@@ -229,7 +229,7 @@
                 await pyodide.runPythonAsync(`
                     import sys
                     from js import globalThis
-        
+                    
                     class StdoutRedirect:
                         def write(self, text):
                             if text.strip():
@@ -237,7 +237,7 @@
         
                         def flush(self):
                             pass
-        
+                    
                     sys.stdout = StdoutRedirect()
                     sys.stderr = sys.stdout
                 `);
@@ -268,11 +268,17 @@
                 historyIndex = commandHistory.length;
             }
             const parts = cmd.trim().split(' ');
-            let output = '';
+        
+            // Display the command itself before processing it
+            const commandDiv = document.createElement('div');
+            commandDiv.innerHTML = `<span>$</span> ${cmd}`;
+            terminal.insertBefore(commandDiv, commandInput.parentElement);
             
+            let output = '';
+        
             if (parts[0] === 'python') {
                 const code = cmd.slice(7);  // Extract everything after "python "
-                await runPython(code);  // Ensure Python output appears correctly
+                await runPython(code);  // Ensure this runs properly
                 return;
             }
         
@@ -333,9 +339,6 @@
                     output = 'Command not found';
             }
         
-            const commandDiv = document.createElement('div');
-            commandDiv.innerHTML = `<span>$</span> ${cmd}`;
-            terminal.insertBefore(commandDiv, commandInput.parentElement);
             if (output) {
                 displayOutput(output);
             }
@@ -343,6 +346,7 @@
             commandInput.value = '';
             terminal.scrollTop = terminal.scrollHeight;
         }
+        
         
 
 
