@@ -173,6 +173,10 @@ animation: flicker 10s infinite alternate;
 .fisheye {
     filter: url(#fisheye);
 }
-iframe {
+
+#browser-frame {                        
+    filter: none !important;
+}
+.terminal {
     filter: none !important;
 }

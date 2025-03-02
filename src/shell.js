@@ -262,7 +262,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
             trainElement.style.whiteSpace = 'pre';
             trainElement.style.fontFamily = 'monospace';
             trainElement.style.left = `${xPos}px`;
-            trainElement.style.top = '50%';
+            trainElement.style.top = '57%';
             terminal.appendChild(trainElement);
         
             let frameIndex = 0;
@@ -301,13 +301,30 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
         
         
         showGreeting();
+        async function loadPyodideScript() {
+            return new Promise((resolve, reject) => {
+                if (window.loadPyodide) {
+                    resolve(); // Pyodide already loaded
+                    return;
+                }
+        
+                const script = document.createElement("script");
+                script.src = "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js";
+                script.onload = () => resolve();
+                script.onerror = () => reject(new Error("Failed to load Pyodide script"));
+        
+                document.head.appendChild(script);
+            });
+        }
+        
         async function loadPyodideInstance() {
-            const loadingMessage = document.createElement('div');
+            const loadingMessage = document.createElement("div");
             loadingMessage.textContent = "Loading Python...";
             terminal.insertBefore(loadingMessage, commandInput.parentElement);
             terminal.scrollTop = terminal.scrollHeight;
         
             try {
+                await loadPyodideScript(); // Ensure Pyodide script is loaded
                 pyodide = await globalThis.loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/" });
                 pyodideReady = true;
                 loadingMessage.textContent = "Python loaded!";
@@ -317,6 +334,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
         
             terminal.scrollTop = terminal.scrollHeight;
         }
+        
         async function runPython(code) {
             if (!pyodideReady) {
                 await loadPyodideInstance();
