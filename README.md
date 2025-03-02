@@ -15,8 +15,7 @@ But if you HATE sharing your ip-address with us, you can also run it locally:
 
 ## Planned features:
 1. Integrate the better styling mosstuff wrote
-2. Integrate a Python interpreter
-3. Add the capability to provide a non-empty disk at load
+
 
 ## WOW i love this project so much i just HAVE to contribute to it!
 Wait, really?\
@@ -24,6 +23,3 @@ Why would anyone want to contribute to such a random project?\
 Well if  you really want to you can reach out to us at our (beautiful) websites:\
 https://sach.si/ \
 https://mosstuff.de
-
-
-Published under the GPL license, you are free to use it however you want, as long as you cite us and publish it too under GPL

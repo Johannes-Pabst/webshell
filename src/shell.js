@@ -1,10 +1,46 @@
+        let name = "Sach.si" //don't forget to change the site title in the html  
         class FileSystem {
-            constructor() {
-                this.root = {
-                    name: '/',
-                    type: 'dir',
-                    children: {}
-                };
+            
+                constructor() {
+                    this.root = {
+                        name: '/',
+                        type: 'dir',
+                        children: {
+                            'home': {
+                                name: 'home',
+                                type: 'dir',
+                                children: {
+                                    'user': {
+                                        name: 'user',
+                                        type: 'dir',
+                                        children: {
+                                            'notes.txt': {
+                                                name: 'notes.txt',
+                                                type: 'file',
+                                                content: 'This is a preloaded file with some text.'
+                                            },
+                                            'script.py': {
+                                                name: 'script.py',
+                                                type: 'file',
+                                                content: 'print("Hello from script.py")'
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            'bin': {
+                                name: 'bin',
+                                type: 'dir',
+                                children: {
+                                    'hello.sh': {
+                                        name: 'hello.sh',
+                                        type: 'file',
+                                        content: 'echo "Hello, world!"'
+                                    }
+                                }
+                            }
+                        }
+                    };
                 this.currentDir = this.root;
                 this.path = '/';
                 this.startTime = Date.now();
@@ -45,29 +81,30 @@
                 return `Random number: ${Math.floor(Math.random() * (num + 1))}`;
             }
             sysinfo() {
-                return `
-                .-/+oossssoo+/-.
-                \`:+ssssssssssssssssss+:\`          sach.si@insane-rig
-                -+ssssssssssssssssssyyssss+-        -------------------
-                .ossssssssssssssssssdMMMNysssso.      OS: WebOS x86_64 (non-LG)
-                /ssssssssssshdmmNNmmyNMMMMhssssss/     Host: Eurofighter Tranche 4 DDI2
-                +ssssssssshmydMMMMMMMNddddyssssssss+    Kernel: 6.6.7-zen1-1-custom
-                /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/   ${this.uptime()}
-                .ssssssssdMMMNhsssssssssshNMMMdssssssss.  Packages: 1984 (pacman)
-                +sssshhhyNMMNyssssssssssssyNMMMysssssss+  Shell: sbash 0.1.2
-                ossyNMMMNyMMhsssssssssssssshmmmhssssssso  Resolution: 7680x4320 (VR Ready)
-                ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
-                +sssshhhyNMMNyssssssssssssyNMMMysssssss+  WM: none
-                .ssssssssdMMMNhsssssssssshNMMMdssssssss.  WM Theme: n/a
-                /sssssssshNMMMyhhyyyyhdNMMMNhssssssss/   Terminal: browser
-                +sssssssssdmydMMMMMMMMddddyssssssss+    CPU: 256-core Quantum AI Processor
-                /ssssssssssshdmNNNNmyNMMMMhssssss/     GPU: 4x RTX 9090 Ti UltraVoid
-                .ossssssssssssssssssdMMMNysssso.      Memory: 1.5TB DDR6.9 (Overclocked)
-                -+sssssssssssssssssyyyssss+-        Storage: 500TB NVMe GenX
-                \`:+ssssssssssssssssss+:\`          Power Source: Cold Fusion Reactor
-                .-/+oossssoo+/-.              Hidden Feature: 🦄 Secret AI Cluster Online
-                `;
-            }
+
+    return `
+            .-/+oossssoo+/-.
+        \`:+ssssssssssssssssss+:\`          sach.si@insane-rig
+      -+ssssssssssssssssssyyssss+-        -------------------
+    .ossssssssssssssssssdMMMNysssso.      OS: Arch Linux x86_64
+   /ssssssssssshdmmNNmmyNMMMMhssssss/     Host: Eurofighter Tranche 4 DDI2
+  +ssssssssshmydMMMMMMMNddddyssssssss+    Kernel: 6.6.7-zen1-1-custom
+ /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/   ${this.uptime()}
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.  Packages: 1984 (pacman)
++sssshhhyNMMNyssssssssssssyNMMMysssssss+  Shell: zsh 5.9
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso  Resolution: 7680x4320 (VR Ready)
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
++sssshhhyNMMNyssssssssssssyNMMMysssssss+  WM: OpenBox, but in a box
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.  WM Theme: CyberMatrixOverkill
+ /sssssssshNMMMyhhyyyyhdNMMMNhssssssss/   Terminal: alacritty (hacked)
+  +sssssssssdmydMMMMMMMMddddyssssssss+    CPU: 256-core Quantum AI Processor
+   /ssssssssssshdmNNNNmyNMMMMhssssss/     GPU: 4x RTX 9090 Ti UltraVoid
+    .ossssssssssssssssssdMMMNysssso.      Memory: 1.5TB DDR6.9 (Overclocked)
+      -+sssssssssssssssssyyyssss+-        Storage: 500TB NVMe GenX
+        \`:+ssssssssssssssssss+:\`          Power Source: Cold Fusion Reactor
+            .-/+oossssoo+/-.              Hidden Feature: 🦄 Secret AI Cluster Online
+    `;
+}
 
 
 
@@ -171,41 +208,117 @@
         const nanoEditor = document.getElementById('nano-editor');
         let commandHistory = [];
         let historyIndex = -1;
-
+        let pyodide = null; // Pyodide instance
+        let pyodideReady = false; // Track if Pyodide is loaded
         function showGreeting() {
-            const greeting = `Sach.si Shell (with no point whatsoever, wtf did u expect, its still sach.si )\nType 'help' to see available commands.\n`;
+            const greeting = `${name} Shell (with no point whatsoever, wtf did u expect, its still ${name} )\nType 'help' to see available commands.\n`;
             const greetingDiv = document.createElement('div');
             greetingDiv.textContent = greeting;
             terminal.insertBefore(greetingDiv, commandInput.parentElement);
         }
+        function displayOutput(text) {
+            const outputDiv = document.createElement('div');
+            outputDiv.textContent = text;
+            outputDiv.style.whiteSpace = "pre-wrap"; // Ensure newlines are preserved
+            terminal.insertBefore(outputDiv, commandInput.parentElement);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+        
+        
         showGreeting();
-
-        function executeCommand(cmd) {
+        async function loadPyodideInstance() {
+            const loadingMessage = document.createElement('div');
+            loadingMessage.textContent = "Loading Python...";
+            terminal.insertBefore(loadingMessage, commandInput.parentElement);
+            terminal.scrollTop = terminal.scrollHeight;
+        
+            try {
+                pyodide = await globalThis.loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/" });
+                pyodideReady = true;
+                loadingMessage.textContent = "Python loaded! You can now run scripts.";
+            } catch (e) {
+                loadingMessage.textContent = `Failed to load Python: ${e.message}`;
+            }
+        
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+        async function runPython(code) {
+            if (!pyodideReady) {
+                await loadPyodideInstance();
+            }
+        
+            try {
+                globalThis.__output = [];  // Ensure output storage exists
+        
+                function showOutput() {
+                    let outputDiv = document.getElementById("python-output");
+                    if (outputDiv) {
+                        outputDiv.innerHTML = globalThis.__output.join("<br>");
+                    }
+                }
+        
+                globalThis.capturePythonOutput = function (text) {
+                    globalThis.__output.push(text);
+                    showOutput();
+                };
+        
+                // Redirect Python stdout/stderr
+                await pyodide.runPythonAsync(`
+                    import sys
+                    from js import globalThis
+                    
+                    class StdoutRedirect:
+                        def write(self, text):
+                            if text.strip():
+                                globalThis.capturePythonOutput(text)
+        
+                        def flush(self):
+                            pass
+                    
+                    sys.stdout = StdoutRedirect()
+                    sys.stderr = sys.stdout
+                `);
+        
+                // Check if code is a filename and read it from the virtual filesystem
+                if (fs.currentDir.children[code] && fs.currentDir.children[code].type === 'file') {
+                    const fileContent = fs.currentDir.children[code].content; // Get file contents
+                    await pyodide.FS.writeFile("/" + code, fileContent); // Save it to Pyodide FS
+                    code = `exec(open("/${code}").read())`; // Modify code to execute the file
+                }
+        
+                await pyodide.runPythonAsync(code);
+                const outputText = globalThis.__output.join("\n");
+                displayOutput(outputText || "");
+        
+            } catch (e) {
+                displayOutput(`Python Error: ${e}`);
+            }
+        }
+        
+        
+        
+        
+        
+        async function executeCommand(cmd) {
             if (cmd.trim()) {
                 commandHistory.push(cmd);
                 historyIndex = commandHistory.length;
             }
             const parts = cmd.trim().split(' ');
+        
+            // Display the command itself before processing it
+            const commandDiv = document.createElement('div');
+            commandDiv.innerHTML = `<span>$</span> ${cmd}`;
+            terminal.insertBefore(commandDiv, commandInput.parentElement);
+            
             let output = '';
-
-            if (parts[0] === 'browser' && parts[1]) {
-                const url = parts[1];
-                const iframe = document.createElement('iframe');
-                iframe.src = url;
-                iframe.style.width = '100%';
-                iframe.style.height = '500px';
-                iframe.style.border = 'none';
-
-                const commandDiv = document.createElement('div');
-                commandDiv.innerHTML = `<span>$</span> ${cmd}`;
-                terminal.insertBefore(commandDiv, commandInput.parentElement);
-
-                terminal.insertBefore(iframe, commandInput.parentElement);
-                terminal.scrollTop = terminal.scrollHeight;
-                commandInput.value = '';
+        
+            if (parts[0] === 'python') {
+                const code = cmd.slice(7);  // Extract everything after "python "
+                await runPython(code);  // Ensure this runs properly
                 return;
             }
-
+        
             switch (parts[0]) {
                 case 'ls':
                     output = fs.ls();
@@ -262,20 +375,16 @@
                 default:
                     output = 'Command not found';
             }
-
-            const commandDiv = document.createElement('div');
-            commandDiv.innerHTML = `<span>$</span> ${cmd}`;
-            terminal.insertBefore(commandDiv, commandInput.parentElement);
-
+        
             if (output) {
-                const outputDiv = document.createElement('div');
-                outputDiv.textContent = output;
-                terminal.insertBefore(outputDiv, commandInput.parentElement);
+                displayOutput(output);
             }
-
+        
             commandInput.value = '';
             terminal.scrollTop = terminal.scrollHeight;
         }
+        
+        
 
 
         nanoEditor.addEventListener('keydown', function(event) {
