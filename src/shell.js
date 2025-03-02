@@ -269,10 +269,10 @@
             }
             const parts = cmd.trim().split(' ');
             let output = '';
-        
+            
             if (parts[0] === 'python') {
                 const code = cmd.slice(7);  // Extract everything after "python "
-                await runPython(code);  // Ensure this runs properly
+                await runPython(code);  // Ensure Python output appears correctly
                 return;
             }
         
