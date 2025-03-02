@@ -185,6 +185,9 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
             help() {
                 return `Available commands:
                 ls - List directory contents
+                sl - most important command ever!
+                echo <text> - repeat the text
+                rm - deletes files
                 pwd - Show current path
                 mkdir <directory> - Create a new directory
                 touch <filename> - Create a new file
@@ -200,6 +203,8 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                 help - Display this help message
                 neofetch - displays system information
                 python - run python code!
+                wget <URL> - download files from the internet
+                command1 | command2 - run command1 followed by command2
                 exit - Close the session`;
             }
             async wget(url) {
