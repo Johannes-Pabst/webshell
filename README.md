@@ -24,3 +24,6 @@ Why would anyone want to contribute to such a random project?\
 Well if  you really want to you can reach out to us at our (beautiful) websites:\
 https://sach.si/ \
 https://mosstuff.de
+
+
+Published under the GPL license, you are free to use it however you want, as long as you cite us and publish it too under GPL
