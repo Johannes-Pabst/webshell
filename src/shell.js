@@ -1,4 +1,5 @@
-        let name = "Sach.si" //don't forget to change the site title in the html  
+        let name = "webOS" //don't forget to change the site title in the html
+        const version = "0.0.1"
         class FileSystem {
             
                 constructor() {
@@ -42,7 +43,7 @@
                         }
                     };
                 this.currentDir = this.root;
-                this.path = '/';
+                this.path = '/home/user/';
                 this.startTime = Date.now();
             }
             ls() {
@@ -198,7 +199,21 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                 ps - displays the current processes
                 help - Display this help message
                 neofetch - displays system information
+                python - run python code!
                 exit - Close the session`;
+            }
+            async wget(url) {
+                let response = await fetch(url);
+                let data = await response.text();
+                let filename = ''
+                filename = url.substring(url.lastIndexOf("/") + 1).split("?")[0];
+                if (this.currentDir.children[filename]) return 'File already exists';
+                this.currentDir.children[filename] = {
+                    filename,
+                    type: 'file',
+                    content: data
+                };
+                return `File '${filename}' created.`;
             }
         }
 
@@ -211,7 +226,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
         let pyodide = null; // Pyodide instance
         let pyodideReady = false; // Track if Pyodide is loaded
         function showGreeting() {
-            const greeting = `${name} Shell (with no point whatsoever, wtf did u expect, its still ${name} )\nType 'help' to see available commands.\n`;
+            const greeting = `${name} shell version: ${version}\nType 'help' to see available commands.\n`;
             const greetingDiv = document.createElement('div');
             greetingDiv.textContent = greeting;
             terminal.insertBefore(greetingDiv, commandInput.parentElement);
@@ -235,7 +250,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
             try {
                 pyodide = await globalThis.loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/" });
                 pyodideReady = true;
-                loadingMessage.textContent = "Python loaded! You can now run scripts.";
+                loadingMessage.textContent = "Python loaded!";
             } catch (e) {
                 loadingMessage.textContent = `Failed to load Python: ${e.message}`;
             }
@@ -372,6 +387,9 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                 case 'ps':
                     output = fs.ps();
                     break;
+                case 'wget':
+                    output = await fs.wget(parts[1]);
+                    break
                 default:
                     output = 'Command not found';
             }
