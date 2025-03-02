@@ -16,6 +16,7 @@ But if you HATE sharing your ip-address with us, you can also run it locally:
 ## Planned features:
 1. Integrate the better styling mosstuff wrote
 2. Integrate a Python interpreter
+3. Add the capability to provide a non-empty disk at load
 
 ## WOW i love this project so much i just HAVE to contribute to it!
 Wait, really?\
