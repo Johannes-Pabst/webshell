@@ -224,7 +224,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
         case 'cd': output = fs.cd(parts[1]); break;
         case 'tree': output = fs.tree(); break;
         case 'help': output = fs.help(); break;
-        case 'sysinfo': output = fs.sysinfo(); break;
+        case 'neofetch': output = fs.sysinfo(); break;
         case 'rm': output = parts[1] === '-r' ? fs.rm(parts[2], true) : fs.rm(parts[1]); break;
         case 'clear': location.reload(); return;
         case 'exit': output = 'Session closed'; commandInput.disabled = true; return;
