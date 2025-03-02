@@ -238,6 +238,61 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
             terminal.insertBefore(outputDiv, commandInput.parentElement);
             terminal.scrollTop = terminal.scrollHeight;
         }
+        function startTrainAnimation() {
+            const trainFrames = [
+`      ====        ________                ___________ 
+  _D _|  |_______/        \\__I_I_____===__|_________| 
+   |(_)---  |   H\\________/ |   |        =|___ ___|   
+   /     |  |   H  |  |     |   |         ||_| |_||   
+  |      |  |   H  |__--------------------| [___] |   
+  |  []  |  |   H  |  |     |   |         |       |   
+<=|______|__|___H__/_______|___|__________|_______|====
+ /==/ |  | |  /  |========================|  | |  |   
+     (O)(O)  (O)(O)                      (O)(O)(O)   `
+            ];
+        
+            let xPos = terminal.clientWidth;
+            const trainElement = document.createElement('pre');
+            trainElement.style.position = 'absolute';
+            trainElement.style.whiteSpace = 'pre';
+            trainElement.style.fontFamily = 'monospace';
+            trainElement.style.left = `${xPos}px`;
+            trainElement.style.top = '50%';
+            terminal.appendChild(trainElement);
+        
+            let frameIndex = 0;
+        
+            function updateTrain() {
+                trainElement.textContent = trainFrames[frameIndex];
+                trainElement.style.left = `${xPos}px`;
+                xPos -= 15  ;
+        
+                frameIndex = (frameIndex + 1) % trainFrames.length;
+        
+                if (xPos < -trainElement.clientWidth) {
+                    clearInterval(trainInterval);
+                    terminal.removeChild(trainElement);
+                }
+            }
+        
+            const trainInterval = setInterval(updateTrain, 100);
+        }
+        
+        function openBrowser(url) {
+            const browserFrame = document.getElementById('browser-frame');
+            if (!url) return "Usage: browser <url>";
+            
+            browserFrame.src = url;
+            browserFrame.style.display = "block";
+        
+            return `Opening ${url} in browser...`;
+        }
+        
+        function closeBrowser() {
+            const browserFrame = document.getElementById('browser-frame');
+            browserFrame.style.display = "none";
+            return "Browser closed.";
+        }
         
         
         showGreeting();
@@ -320,17 +375,38 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                 historyIndex = commandHistory.length;
             }
             const parts = cmd.trim().split(' ');
-        
+            const commands = cmd.split('|').map(c => c.trim()); // Split commands by '|'
+            let input = ''; // Store output of previous command
+            for (let i = 0; i < commands.length; i++) {
+                const parts = commands[i].split(' ');
+                let output = '';
             // Display the command itself before processing it
             const commandDiv = document.createElement('div');
             commandDiv.innerHTML = `<span>$</span> ${cmd}`;
             terminal.insertBefore(commandDiv, commandInput.parentElement);
             
-            let output = '';
+            
         
             if (parts[0] === 'python') {
                 const code = cmd.slice(7);  // Extract everything after "python "
                 await runPython(code);  // Ensure this runs properly
+                return;
+            }
+            if (parts[0] === 'browser' && parts[1]) {
+                const url = parts[1];
+                const iframe = document.createElement('iframe');
+                iframe.src = url;
+                iframe.style.width = '100%';
+                iframe.style.height = '500px';
+                iframe.style.border = 'none';
+                
+                const commandDiv = document.createElement('div');
+                commandDiv.innerHTML = `<span>$</span> ${cmd}`;
+                
+        
+                terminal.insertBefore(iframe, commandInput.parentElement);
+                terminal.scrollTop = terminal.scrollHeight;
+                commandInput.value = '';
                 return;
             }
         
@@ -350,6 +426,9 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                 case 'cat':
                     output = fs.cat(parts[1]);
                     break;
+                case 'sl':  // New: Steam Locomotive animation
+                    startTrainAnimation();
+                    return;
                 case 'cd':
                     output = fs.cd(parts[1]);
                     break;
@@ -390,6 +469,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                 case 'wget':
                     output = await fs.wget(parts[1]);
                     break
+                case 'browser': output = openBrowser(parts[1]); break;
                 default:
                     output = 'Command not found';
             }
@@ -402,7 +482,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
             terminal.scrollTop = terminal.scrollHeight;
         }
         
-        
+    }
 
 
         nanoEditor.addEventListener('keydown', function(event) {
