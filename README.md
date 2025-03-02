@@ -14,7 +14,7 @@ But if you HATE sharing your ip-address with us, you can also run it locally:
 2. Open `src/index.html`
 
 ## Planned features:
-1. Integrate the better styling mosstuff wrote
+
 
 
 ## WOW i love this project so much i just HAVE to contribute to it!
