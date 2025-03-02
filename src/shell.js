@@ -1,10 +1,45 @@
         class FileSystem {
-            constructor() {
-                this.root = {
-                    name: '/',
-                    type: 'dir',
-                    children: {}
-                };
+            
+                constructor() {
+                    this.root = {
+                        name: '/',
+                        type: 'dir',
+                        children: {
+                            'home': {
+                                name: 'home',
+                                type: 'dir',
+                                children: {
+                                    'user': {
+                                        name: 'user',
+                                        type: 'dir',
+                                        children: {
+                                            'notes.txt': {
+                                                name: 'notes.txt',
+                                                type: 'file',
+                                                content: 'This is a preloaded file with some text.'
+                                            },
+                                            'script.py': {
+                                                name: 'script.py',
+                                                type: 'file',
+                                                content: 'print("Hello from script.py")'
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            'bin': {
+                                name: 'bin',
+                                type: 'dir',
+                                children: {
+                                    'hello.sh': {
+                                        name: 'hello.sh',
+                                        type: 'file',
+                                        content: 'echo "Hello, world!"'
+                                    }
+                                }
+                            }
+                        }
+                    };
                 this.currentDir = this.root;
                 this.path = '/';
                 this.startTime = Date.now();
@@ -229,7 +264,7 @@
                 await pyodide.runPythonAsync(`
                     import sys
                     from js import globalThis
-        
+                    
                     class StdoutRedirect:
                         def write(self, text):
                             if text.strip():
@@ -237,7 +272,7 @@
         
                         def flush(self):
                             pass
-        
+                    
                     sys.stdout = StdoutRedirect()
                     sys.stderr = sys.stdout
                 `);
@@ -268,11 +303,17 @@
                 historyIndex = commandHistory.length;
             }
             const parts = cmd.trim().split(' ');
-            let output = '';
+        
+            // Display the command itself before processing it
+            const commandDiv = document.createElement('div');
+            commandDiv.innerHTML = `<span>$</span> ${cmd}`;
+            terminal.insertBefore(commandDiv, commandInput.parentElement);
             
+            let output = '';
+        
             if (parts[0] === 'python') {
                 const code = cmd.slice(7);  // Extract everything after "python "
-                await runPython(code);  // Ensure Python output appears correctly
+                await runPython(code);  // Ensure this runs properly
                 return;
             }
         
@@ -333,9 +374,6 @@
                     output = 'Command not found';
             }
         
-            const commandDiv = document.createElement('div');
-            commandDiv.innerHTML = `<span>$</span> ${cmd}`;
-            terminal.insertBefore(commandDiv, commandInput.parentElement);
             if (output) {
                 displayOutput(output);
             }
@@ -343,6 +381,7 @@
             commandInput.value = '';
             terminal.scrollTop = terminal.scrollHeight;
         }
+        
         
 
 
