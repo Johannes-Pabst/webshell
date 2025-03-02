@@ -223,6 +223,21 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
             terminal.insertBefore(outputDiv, commandInput.parentElement);
             terminal.scrollTop = terminal.scrollHeight;
         }
+        function openBrowser(url) {
+            const browserFrame = document.getElementById('browser-frame');
+            if (!url) return "Usage: browser <url>";
+            
+            browserFrame.src = url;
+            browserFrame.style.display = "block";
+        
+            return `Opening ${url} in browser...`;
+        }
+        
+        function closeBrowser() {
+            const browserFrame = document.getElementById('browser-frame');
+            browserFrame.style.display = "none";
+            return "Browser closed.";
+        }
         
         
         showGreeting();
@@ -305,7 +320,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                 historyIndex = commandHistory.length;
             }
             const parts = cmd.trim().split(' ');
-        
+            
             // Display the command itself before processing it
             const commandDiv = document.createElement('div');
             commandDiv.innerHTML = `<span>$</span> ${cmd}`;
@@ -316,6 +331,23 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
             if (parts[0] === 'python') {
                 const code = cmd.slice(7);  // Extract everything after "python "
                 await runPython(code);  // Ensure this runs properly
+                return;
+            }
+            if (parts[0] === 'browser' && parts[1]) {
+                const url = parts[1];
+                const iframe = document.createElement('iframe');
+                iframe.src = url;
+                iframe.style.width = '100%';
+                iframe.style.height = '500px';
+                iframe.style.border = 'none';
+                
+                const commandDiv = document.createElement('div');
+                commandDiv.innerHTML = `<span>$</span> ${cmd}`;
+                
+        
+                terminal.insertBefore(iframe, commandInput.parentElement);
+                terminal.scrollTop = terminal.scrollHeight;
+                commandInput.value = '';
                 return;
             }
         
@@ -372,6 +404,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                 case 'ps':
                     output = fs.ps();
                     break;
+                case 'browser': output = openBrowser(parts[1]); break;
                 default:
                     output = 'Command not found';
             }
