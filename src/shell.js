@@ -1,3 +1,4 @@
+        let name = "Sach.si" //don't forget to change the site title in the html  
         class FileSystem {
             
                 constructor() {
@@ -80,29 +81,30 @@
                 return `Random number: ${Math.floor(Math.random() * (num + 1))}`;
             }
             sysinfo() {
-                return `
-                .-/+oossssoo+/-.
-                \`:+ssssssssssssssssss+:\`          sach.si@insane-rig
-                -+ssssssssssssssssssyyssss+-        -------------------
-                .ossssssssssssssssssdMMMNysssso.      OS: WebOS x86_64 (non-LG)
-                /ssssssssssshdmmNNmmyNMMMMhssssss/     Host: Eurofighter Tranche 4 DDI2
-                +ssssssssshmydMMMMMMMNddddyssssssss+    Kernel: 6.6.7-zen1-1-custom
-                /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/   ${this.uptime()}
-                .ssssssssdMMMNhsssssssssshNMMMdssssssss.  Packages: 1984 (pacman)
-                +sssshhhyNMMNyssssssssssssyNMMMysssssss+  Shell: sbash 0.1.2
-                ossyNMMMNyMMhsssssssssssssshmmmhssssssso  Resolution: 7680x4320 (VR Ready)
-                ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
-                +sssshhhyNMMNyssssssssssssyNMMMysssssss+  WM: none
-                .ssssssssdMMMNhsssssssssshNMMMdssssssss.  WM Theme: n/a
-                /sssssssshNMMMyhhyyyyhdNMMMNhssssssss/   Terminal: browser
-                +sssssssssdmydMMMMMMMMddddyssssssss+    CPU: 256-core Quantum AI Processor
-                /ssssssssssshdmNNNNmyNMMMMhssssss/     GPU: 4x RTX 9090 Ti UltraVoid
-                .ossssssssssssssssssdMMMNysssso.      Memory: 1.5TB DDR6.9 (Overclocked)
-                -+sssssssssssssssssyyyssss+-        Storage: 500TB NVMe GenX
-                \`:+ssssssssssssssssss+:\`          Power Source: Cold Fusion Reactor
-                .-/+oossssoo+/-.              Hidden Feature: 🦄 Secret AI Cluster Online
-                `;
-            }
+
+    return `
+            .-/+oossssoo+/-.
+        \`:+ssssssssssssssssss+:\`          sach.si@insane-rig
+      -+ssssssssssssssssssyyssss+-        -------------------
+    .ossssssssssssssssssdMMMNysssso.      OS: Arch Linux x86_64
+   /ssssssssssshdmmNNmmyNMMMMhssssss/     Host: Eurofighter Tranche 4 DDI2
+  +ssssssssshmydMMMMMMMNddddyssssssss+    Kernel: 6.6.7-zen1-1-custom
+ /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/   ${this.uptime()}
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.  Packages: 1984 (pacman)
++sssshhhyNMMNyssssssssssssyNMMMysssssss+  Shell: zsh 5.9
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso  Resolution: 7680x4320 (VR Ready)
+ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
++sssshhhyNMMNyssssssssssssyNMMMysssssss+  WM: OpenBox, but in a box
+.ssssssssdMMMNhsssssssssshNMMMdssssssss.  WM Theme: CyberMatrixOverkill
+ /sssssssshNMMMyhhyyyyhdNMMMNhssssssss/   Terminal: alacritty (hacked)
+  +sssssssssdmydMMMMMMMMddddyssssssss+    CPU: 256-core Quantum AI Processor
+   /ssssssssssshdmNNNNmyNMMMMhssssss/     GPU: 4x RTX 9090 Ti UltraVoid
+    .ossssssssssssssssssdMMMNysssso.      Memory: 1.5TB DDR6.9 (Overclocked)
+      -+sssssssssssssssssyyyssss+-        Storage: 500TB NVMe GenX
+        \`:+ssssssssssssssssss+:\`          Power Source: Cold Fusion Reactor
+            .-/+oossssoo+/-.              Hidden Feature: 🦄 Secret AI Cluster Online
+    `;
+}
 
 
 
@@ -209,7 +211,7 @@
         let pyodide = null; // Pyodide instance
         let pyodideReady = false; // Track if Pyodide is loaded
         function showGreeting() {
-            const greeting = `Sach.si Shell (with no point whatsoever, wtf did u expect, its still sach.si )\nType 'help' to see available commands.\n`;
+            const greeting = `${name} Shell (with no point whatsoever, wtf did u expect, its still ${name} )\nType 'help' to see available commands.\n`;
             const greetingDiv = document.createElement('div');
             greetingDiv.textContent = greeting;
             terminal.insertBefore(greetingDiv, commandInput.parentElement);

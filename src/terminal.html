@@ -7,16 +7,33 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
+
     <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
     
 
 
+
+
+    <svg width="0" height="0">
+    <defs>
+      <filter id="fisheye">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" result="noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="5"/>
+      </filter>
+    </defs>
+    </svg>
+  
+
     <div id="terminal">
+    <div class="terminal fisheye" id="terminal">
+
         <div class="prompt">
-            <span>$</span> <input id="command" autofocus>
+            <span>$</span> <input class="command" id="command" autofocus>
         </div>
+        <textarea id="nano-editor"></textarea>
     </div>
-    <textarea id="nano-editor"></textarea>
+
+    <div class="scanlines"></div>
     <script src="shell.js"></script>
 </body>
 </html>
