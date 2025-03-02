@@ -1,10 +1,45 @@
         class FileSystem {
-            constructor() {
-                this.root = {
-                    name: '/',
-                    type: 'dir',
-                    children: {}
-                };
+            
+                constructor() {
+                    this.root = {
+                        name: '/',
+                        type: 'dir',
+                        children: {
+                            'home': {
+                                name: 'home',
+                                type: 'dir',
+                                children: {
+                                    'user': {
+                                        name: 'user',
+                                        type: 'dir',
+                                        children: {
+                                            'notes.txt': {
+                                                name: 'notes.txt',
+                                                type: 'file',
+                                                content: 'This is a preloaded file with some text.'
+                                            },
+                                            'script.py': {
+                                                name: 'script.py',
+                                                type: 'file',
+                                                content: 'print("Hello from script.py")'
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            'bin': {
+                                name: 'bin',
+                                type: 'dir',
+                                children: {
+                                    'hello.sh': {
+                                        name: 'hello.sh',
+                                        type: 'file',
+                                        content: 'echo "Hello, world!"'
+                                    }
+                                }
+                            }
+                        }
+                    };
                 this.currentDir = this.root;
                 this.path = '/';
                 this.startTime = Date.now();
