@@ -17,6 +17,7 @@ But if you HATE sharing your ip-address with us, you can also run it locally:
 1. Dino Game
 2. Pong
 3. Flappy Bird
+4. Packet manager
 
 
 ## WOW i love this project so much i just HAVE to contribute to it!
