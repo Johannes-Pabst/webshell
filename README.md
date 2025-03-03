@@ -14,7 +14,9 @@ But if you HATE sharing your ip-address with us, you can also run it locally:
 2. Open `src/index.html`
 
 ## Planned features:
-
+1. Dino Game
+2. Pong
+3. Flappy Bird
 
 
 ## WOW i love this project so much i just HAVE to contribute to it!
