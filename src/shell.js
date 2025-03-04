@@ -204,6 +204,8 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                 neofetch - displays system information
                 python - run python code!
                 wget <URL> - download files from the internet
+                exportfs - exports the filesystem as a json
+                importfs - imports the json filesystem
                 command1 | command2 - run command1 followed by command2
                 exit - Close the session`;
             }
@@ -236,6 +238,58 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
             greetingDiv.textContent = greeting;
             terminal.insertBefore(greetingDiv, commandInput.parentElement);
         }
+        function exportFileSystem(filename) {
+            console.log("Exporting filesystem:", JSON.stringify(fs, null, 2)); // Debugging
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(fs, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "filesystem.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            document.body.removeChild(downloadAnchor);
+        }
+        
+        // Function to import a JSON file and restore the filesystem
+        function importFileSystem(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+        
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+        
+                    // Ensure it's valid
+                    if (typeof importedData === "object" && importedData !== null) {
+                        console.log("Importing new filesystem:", importedData);
+        
+                        // Clear filesystem before importing (to prevent duplicates)
+                        fs.root.children = {};
+                        
+                        // Deep clone imported data to avoid reference issues
+                        fs.root = structuredClone(importedData.root);
+                        fs.currentDir = fs.root; // Reset to root
+        
+                        // Save to localStorage (if needed)
+                        localStorage.setItem("filesystem", JSON.stringify(fs.root));
+        
+                        console.log("Filesystem successfully imported and updated:", fs.root);
+        
+                        // Force UI refresh
+                        
+                    } else {
+                        console.error("Invalid filesystem format.");
+                    }
+                } catch (error) {
+                    console.error("Error parsing imported filesystem:", error);
+                }
+            };
+        
+            reader.readAsText(file);
+        }
+        
+        
+        
         function displayOutput(text) {
             const outputDiv = document.createElement('div');
             outputDiv.textContent = text;
@@ -407,8 +461,13 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
             const commandDiv = document.createElement('div');
             commandDiv.innerHTML = `<span>$</span> ${cmd}`;
             terminal.insertBefore(commandDiv, commandInput.parentElement);
-            
-            
+            const fileInput = document.createElement("input");
+            fileInput.type = "file";
+            fileInput.id = "importFileInput";
+            fileInput.style.display = "none";
+            fileInput.addEventListener("change", importFileSystem);
+            document.body.appendChild(fileInput);
+        
         
             if (parts[0] === 'python') {
                 const code = cmd.slice(7);  // Extract everything after "python "
@@ -476,6 +535,12 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                     return;
                 case 'pwd':
                     output = fs.pwd();
+                    break;
+                case "exportfs":
+                    exportFileSystem();
+                    break;
+                case "importfs":
+                    document.getElementById("importFileInput").click();
                     break;
                 case 'echo':
                     output = fs.echo(parts.slice(1).join(' '));
