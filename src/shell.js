@@ -46,6 +46,7 @@
                 this.path = '/home/user/';
                 this.startTime = Date.now();
             }
+
             ls() {
                 return Object.keys(this.currentDir.children).join(' ') || '(empty directory)';
             }
@@ -218,9 +219,118 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                     type: 'file',
                     content: data
                 };
-                return `File '${filename}' created.`;
+                return `File '${filename}' downloaded.`;
             }
         }
+
+
+        // ===== WINST Package Manager =====
+
+        // Default repository URL (changeable via winst repo <url>)
+        let winstRepoUrl = "https://raw.githubusercontent.com/mosstuff/webshell-repo/refs/heads/main/packages.json";
+
+        // Store installed package metadata (keyed by the registered command)
+        let installedPackages = {};
+
+        // A registry for commands registered by packages.
+        // When a package is installed, its command is added here.
+        let customCommands = {};
+
+        const winstManager = {
+            setRepo: function(url) {
+                winstRepoUrl = url;
+                return `Repository URL set to ${url}`;
+            },
+            // Fetch and parse the remote JSON repo.
+            fetchRepo: async function() {
+                try {
+                    let response = await fetch(winstRepoUrl);
+                    let repoData = await response.json();
+                    // Expect the JSON to have a "packages" array.
+                    return repoData.packages;
+                } catch (e) {
+                    return Promise.reject("Error fetching repository: " + e.message);
+                }
+            },
+            listPackages: async function() {
+                try {
+                    const packages = await this.fetchRepo();
+                    let output = "Available packages:\n";
+                    packages.forEach(pkg => {
+                        output += `- ${pkg.name} (${pkg.type})\n`;
+                    });
+                    return output;
+                } catch (err) {
+                    return err;
+                }
+            },
+            infoPackage: async function(pkgName) {
+                try {
+                    const packages = await this.fetchRepo();
+                    const pkg = packages.find(p => p.name === pkgName);
+                    if (!pkg) return `Package ${pkgName} not found in repository.`;
+                    let output = `Name: ${pkg.name}\nType: ${pkg.type}\nCommand: ${pkg.command}\nHelp: ${pkg.help}\nURL: ${pkg.url}`;
+                    return output;
+                } catch (err) {
+                    return err;
+                }
+            },
+            installPackage: async function(pkgName) {
+                try {
+                    const packages = await this.fetchRepo();
+                    const pkg = packages.find(p => p.name === pkgName);
+                    if (!pkg) return `Package ${pkgName} not found in repository.`;
+                    // Check if the package's command is already installed.
+                    if (customCommands[pkg.command]) return `Package ${pkgName} is already installed.`;
+
+                    // Fetch the package code from its hosted URL.
+                    let response = await fetch(pkg.url);
+                    let code = await response.text();
+
+                    // Register a command based on the package type.
+                    if (pkg.type === "js") {
+                        // For JavaScript packages, wrap the code into a function.
+                        customCommands[pkg.command] = function(args) {
+                            try {
+                                // The package code can use "args" (an array of arguments)
+                                return new Function("args", code)(args);
+                            } catch (e) {
+                                return "Error executing package: " + e.message;
+                            }
+                        };
+                    } else if (pkg.type === "python") {
+                        // For Python packages, run the code using our runPython function.
+                        customCommands[pkg.command] = function(args) {
+                            // You can extend this to pass arguments if desired.
+                            runPython(code);
+                            return ""; // runPython handles its own output.
+                        };
+                    } else {
+                        return "Unsupported package type.";
+                    }
+                    // Save package info for help registration.
+                    installedPackages[pkg.command] = pkg;
+                    return `Package '${pkg.name}' installed. Command '${pkg.command}' registered.`;
+                } catch (e) {
+                    return "Error installing package: " + e.message;
+                }
+            },
+            uninstallPackage: function(pkgName) {
+                // Look for the package by its name in installedPackages.
+                let pkgCommand = null;
+                for (let cmd in installedPackages) {
+                    if (installedPackages[cmd].name === pkgName) {
+                        pkgCommand = cmd;
+                        break;
+                    }
+                }
+                if (!pkgCommand) return `Package ${pkgName} is not installed.`;
+                // Remove the command and package entry.
+                delete customCommands[pkgCommand];
+                delete installedPackages[pkgCommand];
+                return `Package '${pkgName}' uninstalled.`;
+            }
+        };
 
         const fs = new FileSystem();
         const terminal = document.getElementById('terminal');
@@ -432,6 +542,19 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                 commandInput.value = '';
                 return;
             }
+
+
+            if (customCommands.hasOwnProperty(parts[0])) {
+                try {
+                    let result = customCommands[parts[0]](parts.slice(1));
+                    if (result) displayOutput(result);
+                } catch (e) {
+                    output = "Error: " + e.message;
+                    displayOutput(output)
+                }
+                commandInput.value = '';
+                return;
+            }
         
             switch (parts[0]) {
                 case 'ls':
@@ -492,7 +615,25 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                 case 'wget':
                     output = await fs.wget(parts[1]);
                     break
-                case 'browser': output = openBrowser(parts[1]); break;
+                case 'browser': output = openBrowser(parts[1]);
+                    break;
+                case 'winst': {
+                    const subcommand = parts[1];
+                    if (subcommand === 'repo') {
+                        output = winstManager.setRepo(parts[2]);
+                    } else if (subcommand === 'list') {
+                        output = await winstManager.listPackages();
+                    } else if (subcommand === 'info') {
+                        output = await winstManager.infoPackage(parts[2]);
+                    } else if (subcommand === 'install') {
+                        output = await winstManager.installPackage(parts[2]);
+                    } else if (subcommand === 'uninstall') {
+                        output = winstManager.uninstallPackage(parts[2]);
+                    } else {
+                        output = "Usage: winst <repo|list|info|install|uninstall> [args]";
+                    }
+                    break;
+                }
                 default:
                     output = 'Command not found';
             }
@@ -506,7 +647,6 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
         }
         
     }
-
 
         nanoEditor.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {

@@ -1,0 +1,18 @@
+{
+  "packages": [
+    {
+      "name": "greet",
+      "type": "js",
+      "url": "https://example.com/greet.js",
+      "command": "greet",
+      "help": "Prints a greeting message."
+    },
+    {
+      "name": "calc",
+      "type": "python",
+      "url": "https://example.com/calc.py",
+      "command": "calc",
+      "help": "Runs a simple calculator."
+    }
+  ]
+}
