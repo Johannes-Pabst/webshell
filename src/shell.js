@@ -1,5 +1,5 @@
         let name = "webOS" //don't forget to change the site title in the html
-        const version = "0.0.1"
+        const version = "951b480"
         class FileSystem {
             
                 constructor() {
@@ -353,7 +353,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
         let pyodide = null; // Pyodide instance
         let pyodideReady = false; // Track if Pyodide is loaded
         function showGreeting() {
-            const greeting = `${name} shell version: ${version}\nType 'help' to see available commands.\n`;
+            const greeting = `${name} shell version: ${version} with winst\nType 'help' to see available commands.\n`;
             const greetingDiv = document.createElement('div');
             greetingDiv.textContent = greeting;
             terminal.insertBefore(greetingDiv, commandInput.parentElement);
