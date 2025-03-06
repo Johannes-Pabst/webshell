@@ -184,7 +184,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                 return output;
             }
             help() {
-                return `Available commands:
+                let help = `Available commands:
                 ls - List directory contents
                 sl - most important command ever!
                 echo <text> - repeat the text
@@ -205,10 +205,20 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                 neofetch - displays system information
                 python - run python code!
                 wget <URL> - download files from the internet
+                winst <repo|list|info|install|uninstall> [args] - Install a program!
                 exportfs - exports the filesystem as a json
                 importfs - imports the json filesystem
                 command1 | command2 - run command1 followed by command2
-                exit - Close the session`;
+                exit - Close the session`
+                let output = help
+                if (Object.keys(installedPackages).length > 0) {
+                    output += "\n\nInstalled Packages:\n";
+                    for (let key in installedPackages) {
+                        let pkg = installedPackages[key];
+                        output += `                ${pkg.command} - ${pkg.help}\n`;
+                    }
+                }
+                return output;
             }
             async wget(url) {
                 let response = await fetch(url);
