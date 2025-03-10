@@ -42,7 +42,7 @@
                             }
                         }
                     };
-                this.currentDir = this.root;
+                this.currentDir = this.root.children.home.children.user;
                 this.path = '/home/user/';
                 this.startTime = Date.now();
             }
@@ -85,27 +85,48 @@
             sysinfo() {
 
     return `
-            .-/+oossssoo+/-.
-        \`:+ssssssssssssssssss+:\`          sach.si@insane-rig
-      -+ssssssssssssssssssyyssss+-        -------------------
-    .ossssssssssssssssssdMMMNysssso.      OS: Arch Linux x86_64
-   /ssssssssssshdmmNNmmyNMMMMhssssss/     Host: Eurofighter Tranche 4 DDI2
-  +ssssssssshmydMMMMMMMNddddyssssssss+    Kernel: 6.6.7-zen1-1-custom
- /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/   ${this.uptime()}
-.ssssssssdMMMNhsssssssssshNMMMdssssssss.  Packages: 1984 (pacman)
-+sssshhhyNMMNyssssssssssssyNMMMysssssss+  Shell: zsh 5.9
-ossyNMMMNyMMhsssssssssssssshmmmhssssssso  Resolution: 7680x4320 (VR Ready)
-ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
-+sssshhhyNMMNyssssssssssssyNMMMysssssss+  WM: OpenBox, but in a box
-.ssssssssdMMMNhsssssssssshNMMMdssssssss.  WM Theme: CyberMatrixOverkill
- /sssssssshNMMMyhhyyyyhdNMMMNhssssssss/   Terminal: alacritty (hacked)
-  +sssssssssdmydMMMMMMMMddddyssssssss+    CPU: 256-core Quantum AI Processor
-   /ssssssssssshdmNNNNmyNMMMMhssssss/     GPU: 4x RTX 9090 Ti UltraVoid
-    .ossssssssssssssssssdMMMNysssso.      Memory: 1.5TB DDR6.9 (Overclocked)
-      -+sssssssssssssssssyyyssss+-        Storage: 500TB NVMe GenX
-        \`:+ssssssssssssssssss+:\`          Power Source: Cold Fusion Reactor
-            .-/+oossssoo+/-.              Hidden Feature: 🦄 Secret AI Cluster Online
-    `;
+                   -\`                   sach.si@insane-rig
+                  .o+\`                  -------------------
+                 \`ooo/                  OS: Arch Linux x86_64
+                \`+oooo:                 Host: Eurofighter Tranche 4 DDI2
+               \`+oooooo:                Kernel: 6.6.7-zen1-1-custom
+               -+oooooo+:               ${this.uptime()}
+             \`/:-:++oooo+:              Packages: 1984 (pacman)
+            \`/++++/+++++++:             Shell: zsh 5.9
+           \`/++++++++++++++:            Resolution: 7680x4320 (VR Ready)
+          \`/+++ooooooooooooo/\`          DE: i3-gaps + RiceMaster5000
+         ./ooosssso++osssssso+\`         WM: OpenBox, but in a box
+        .oossssso-\`\`\`\`/ossssss+\`        WM Theme: CyberMatrixOverkill
+       -osssssso.      :ssssssso.       Terminal: alacritty (hacked)
+      :osssssss/        osssso+++.      CPU: 256-core Quantum AI Processor
+     /ossssssss/        +ssssooo/-      GPU: 4x RTX 9090 Ti UltraVoid
+   \`/ossssso+/:-        -:/+osssso+-    Memory: 1.5TB DDR6.9 (Overclocked)
+  \`+sso+:-\`                 \`.-/+oso:   Storage: 500TB NVMe GenX
+ \`++:.                           \`-/+/  Power Source: Cold Fusion Reactor
+ .\`                                 \`   Hidden Feature: 🦄 Secret AI Cluster Online
+ `;
+//  `
+//             .-/+oossssoo+/-.
+//         \`:+ssssssssssssssssss+:\`        sach.si@insane-rig
+//       -+ssssssssssssssssssyyssss+-        -------------------
+//     .ossssssssssssssssssdMMMNysssso.      OS: Arch Linux x86_64
+//    /ssssssssssshdmmNNmmyNMMMMhssssss/     Host: Eurofighter Tranche 4 DDI2
+//   +ssssssssshmydMMMMMMMNddddyssssssss+    Kernel: 6.6.7-zen1-1-custom
+//  /sssssssshNMMMyhhyyyyhmNMMMNhssssssss/   ${this.uptime()}
+// .ssssssssdMMMNhsssssssssshNMMMdssssssss.  Packages: 1984 (pacman)
+// +sssshhhyNMMNyssssssssssssyNMMMysssssss+  Shell: zsh 5.9
+// ossyNMMMNyMMhsssssssssssssshmmmhssssssso  Resolution: 7680x4320 (VR Ready)
+// ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
+// +sssshhhyNMMNyssssssssssssyNMMMysssssss+  WM: OpenBox, but in a box
+// .ssssssssdMMMNhsssssssssshNMMMdssssssss.  WM Theme: CyberMatrixOverkill
+//  /sssssssshNMMMyhhyyyyhdNMMMNhssssssss/   Terminal: alacritty (hacked)
+//   +sssssssssdmydMMMMMMMMddddyssssssss+    CPU: 256-core Quantum AI Processor
+//    /ssssssssssshdmNNNNmyNMMMMhssssss/     GPU: 4x RTX 9090 Ti UltraVoid
+//     .ossssssssssssssssssdMMMNysssso.      Memory: 1.5TB DDR6.9 (Overclocked)
+//       -+sssssssssssssssssyyyssss+-        Storage: 500TB NVMe GenX
+//         \`:+ssssssssssssssssss+:\`        Power Source: Cold Fusion Reactor
+//             .-/+oossssoo+/-.              Hidden Feature: 🦄 Secret AI Cluster Online
+//     `;
 }
 
 
@@ -567,7 +588,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
         
         
         async function executeCommand(cmd) {
-            if (cmd.trim()) {
+            if (cmd.trim()&&cmd!=commandHistory[commandHistory.length-1]) {
                 commandHistory.push(cmd);
                 historyIndex = commandHistory.length;
             }
@@ -608,7 +629,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
         
                 terminal.insertBefore(iframe, commandInput.parentElement);
                 terminal.scrollTop = terminal.scrollHeight;
-                commandInput.value = '';
+                commandInput.textContent = '';
                 return;
             }
 
@@ -621,7 +642,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                     output = "Error: " + e.message;
                     displayOutput(output)
                 }
-                commandInput.value = '';
+                commandInput.textContent = '';
                 return;
             }
         
@@ -663,9 +684,9 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                     location.reload();
                     return;
                 case 'exit':
+                    commandInput.hidden=true;
                     output = 'Session closed';
-                    commandInput.disabled = true;
-                    return;
+                    break;
                 case 'pwd':
                     output = fs.pwd();
                     break;
@@ -717,7 +738,7 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
                 displayOutput(output);
             }
         
-            commandInput.value = '';
+            commandInput.textContent = '';
             terminal.scrollTop = terminal.scrollHeight;
         }
         
@@ -732,21 +753,34 @@ ossyNMMMNyMMhsssssssssssssshmmmhssssssso  DE: i3-gaps + RiceMaster5000
 
         commandInput.addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
-                executeCommand(commandInput.value);
+                executeCommand(commandInput.textContent);
+                event.preventDefault(); // Prevent typing enter
             } else if (event.key === 'ArrowUp') {
                 if (historyIndex > 0) {
                     historyIndex--;
-                    commandInput.value = commandHistory[historyIndex];
+                    commandInput.textContent = commandHistory[historyIndex];
                 }
                 event.preventDefault(); // Prevent moving the cursor to the start
+                const range = document.createRange();
+                const sel = window.getSelection();
+                range.selectNodeContents(commandInput);
+                range.collapse(false); // Move cursor to end of command
+                sel.removeAllRanges();
+                sel.addRange(range);
             } else if (event.key === 'ArrowDown') {
                 if (historyIndex < commandHistory.length - 1) {
                     historyIndex++;
-                    commandInput.value = commandHistory[historyIndex];
+                    commandInput.textContent = commandHistory[historyIndex];
                 } else {
                     historyIndex = commandHistory.length;
-                    commandInput.value = '';
+                    commandInput.textContent = '';
                 }
                 event.preventDefault(); // Prevent moving the cursor to the end
+                const range = document.createRange();
+                const sel = window.getSelection();
+                range.selectNodeContents(commandInput);
+                range.collapse(false); // Move cursor to end of command
+                sel.removeAllRanges();
+                sel.addRange(range);
             }
         });

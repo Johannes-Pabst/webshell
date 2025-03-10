@@ -13,6 +13,7 @@ body {
     position: relative;
     overflow: hidden;
     padding: 10px;
+    padding:0;
 }
 
 div {
@@ -122,7 +123,7 @@ p {
 
 .cursor {
     display: inline-block;
-    width: 20px;
+    width: 16px;
     background: #fff;
     animation: blink-cursor 1s steps(2, start) infinite;
 }
@@ -137,7 +138,7 @@ p {
 }
 
 .prompt span {
-    margin-right: 5px;
+    margin-right: 16px;
 }
 
 #nano-editor {
