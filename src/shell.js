@@ -1,5 +1,5 @@
 let name = "webOS" //don't forget to change the site title in the html
-const version = "951b480"
+const version = "49dd6b7"
 class FileSystem {
 
     constructor() {
