@@ -102,7 +102,7 @@ class FileSystem {
      /ossssssss/        +ssssooo/-      GPU: 4x RTX 9090 Ti UltraVoid
    \`/ossssso+/:-        -:/+osssso+-    Memory: 1.5TB DDR6.9 (Overclocked)
   \`+sso+:-\`                 \`.-/+oso:   Storage: 500TB NVMe GenX
- \`++:.                           \`-/+/  Power Source: Cold Fusion Reactor
+ \`++:.                           \`-/+/  Power Supply: Cold Fusion Reactor
  .\`                                 \`   Hidden Feature: 🦄 Secret AI Cluster Online
  `;
         //  `
