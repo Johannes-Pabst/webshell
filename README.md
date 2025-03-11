@@ -11,7 +11,7 @@ There is a live demo at https://sach.si/terminal.html
 
 But if you HATE sharing your ip-address with us, you can also run it locally:
 1. Clone this repo `git clone https://github.com/Herobrudi112/webshell`
-2. Open `src/index.html`
+2. Open `src/terminal.html`
 
 ## Planned features:
 1.Packet Manager
